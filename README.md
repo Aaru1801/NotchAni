@@ -8,18 +8,7 @@ Replaces the top-right macOS volume and brightness HUD with an animated black pi
 - Xcode command-line tools (`xcode-select --install`)
 - Designed for notched MacBooks. On notchless Macs it anchors to the top-center of the primary display.
 
-## Run
 
-```bash
-swift run -c release
-```
-
-Or build an installable `.app`:
-
-```bash
-./scripts/build-app.sh
-open NotchAni.app
-```
 
 NotchAni runs as a menu-bar accessory. Look for the notch-shaped icon in your menu bar to preview states or quit.
 
