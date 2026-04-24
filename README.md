@@ -1,2 +1,0 @@
-# NotchAni
-Dynamic Island - macOS
