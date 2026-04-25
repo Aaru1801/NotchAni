@@ -9,9 +9,8 @@ NotchAni was born out of a simple frustration: the default macOS 26 liquid glass
 
 * **Real-Time Media HUD:** High-res artwork and track info. Unlike other apps, this uses a stateful JSON bridge to ensure song titles and covers update the millisecond the track changes.
 * **Intelligent Device Awareness:** Recognizes more than just AirPods. Whether you're using **bluetooth earphone, bluetooth headphones**, NotchAni identifies the hardware and shows what is connected.
-* **System HUD Suppression:** This is still in progress as I am exploring more stuff to suppress the default system HUD.
+* **System HUD Suppression:** This is still in progress as I am exploring more on how to suppress the default system HUD.
 * **Interactive Controls:** You can also adjust the brightness and the volume from the expanded view itself.
-* **Production Hygiene:** Built-in "zombie" process management to ensure the background bridge starts and stops cleanly with the app.
 
 ---
 
@@ -53,3 +52,6 @@ This project is licensed under the **MIT License**. It is open for anyone to use
 
 This project was born out of a personal desire for a more seamless and modern macOS experience—I wanted this tool to exist, so I decided to make it. While I had the vision and the architectural requirements for NotchAni, I do not previously know anything about the Swift programming language, **Claude Code** has made the realization of this project possible, bridging the gap between my initial idea and the final, functional execution. And it has also sparked something inside me to learn Swift.
 
+## 🫱🏻‍🫲🏿 Contribution
+
+Any and all contributions accepted! I am more than happy to bring more features that everyone want and any issues that are found!
