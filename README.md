@@ -20,7 +20,6 @@ The biggest hurdle for any macOS notch app is that Apple blocks third-party apps
 
 **NotchAni** overcomes this by embedding a specialized **Objective-C framework and Perl-based injector** directly into the app bundle. This bridge impersonates a system process to stream media data as JSON envelopes. We implemented a custom parser that handles:
 1.  **Envelopes:** Parsing the `{"type": "data", "payload": {...}}` structure.
-2.  **Diffing:** Merging incremental updates (e.g., just the timestamp) into a persistent local state.
 3.  **Framework Integrity:** Uses mediaremote-adapter-0.7.3-inspired framework.
    
 ---
