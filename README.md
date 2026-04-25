@@ -1,7 +1,7 @@
 #  NotchAni
 **An in-progress, Dynamic Island-inspired HUD for macOS.**
 
-NotchAni was born out of a simple frustration: the default macOS volume and brightness "bezels" feel dated, and most third-party notch apps are paid or dont feel macOS like enough and were either too complicated. 
+NotchAni was born out of a simple frustration: the default macOS 26 liquid glass pills are kinda annoying to me and dont feel the same as the HUD of dynamic island and aren't as good as they were before.
 
 ---
 
