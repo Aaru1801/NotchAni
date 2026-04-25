@@ -51,5 +51,5 @@ This project is licensed under the **MIT License**. It is open for anyone to use
 
 ## 💡 Origin & Attribution
 
-This project was born out of a personal desire for a more seamless and modern macOS experience—I wanted this tool to exist, so I decided to make it. While I had the vision and the architectural requirements for NotchAni, I do not know the Swift programming language, **Claude Code** has made the realization of this project possible, bridging the gap between my initial idea and the final, functional execution.
+This project was born out of a personal desire for a more seamless and modern macOS experience—I wanted this tool to exist, so I decided to make it. While I had the vision and the architectural requirements for NotchAni, I do not previously know anything about the Swift programming language, **Claude Code** has made the realization of this project possible, bridging the gap between my initial idea and the final, functional execution. And it has also sparked something inside me to learn Swift.
 
