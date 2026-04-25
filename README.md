@@ -1,56 +1,84 @@
-# NotchAni 🚧 (Work in Progress)
+readme_content = """#  NotchAni
+**A production-grade, Dynamic Island-inspired HUD for macOS.**
 
-**NotchAni** aims to replace the top-right macOS volume and brightness HUD with an animated black pill that grows out of the MacBook notch — like a Dynamic Island for the Mac. It runs as a menu-bar accessory. Look for the notch-shaped icon in your menu bar to preview states or quit.
+NotchAni was born out of a simple frustration: the default macOS volume and brightness "bezels" feel dated, and most third-party notch apps are broken when it comes to showing what's actually playing in Spotify or Apple Music. 
 
-> **⚠️ Current Development Status**
-> This app is currently under active development. Please note the following known limitations:
-> * **System HUD Suppression is WIP:** The default macOS volume/brightness pill on the top right currently still appears alongside NotchAni. I'm still figuring out how to completely suppress it. 
-> * **Media Capabilities are WIP:** Features involving `MediaRemote` (like song-change notifications, album art, and expanded playback controls) are currently under development and may not function entirely yet.
+This app replaces those overlays with a sleek, fluidly animated interface that lives in your Mac's notch. It doesn't just show "Nothing Playing"—it uses a custom-built bridge to bypass Apple's private API restrictions to deliver high-resolution artwork and real-time metadata.
 
-## Installation
+---
 
-No terminal commands or manual builds required! Simply download the latest `NotchAni.app` from the **Releases** section of this repository, unzip it, and drag it into your Applications folder.
+## ✨ Features
 
-## Requirements
+* **Real-Time Media HUD:** High-res artwork and track info. Unlike other apps, this uses a stateful JSON bridge to ensure song titles and covers update the millisecond the track changes.
+* **Intelligent Device Awareness:** Recognizes more than just AirPods. Whether you're using **realme buds, Sony WH-series, Bose, or JBL**, NotchAni identifies the hardware and shows the correct icon.
+* **System HUD Suppression:** Silences the native macOS volume and brightness pop-ups so they don't clash with the NotchAni interface.
+* **Interactive Controls:** Scrub through your music or adjust system levels directly from the expanded notch view.
+* **Production Hygiene:** Built-in "zombie" process management to ensure the background bridge starts and stops cleanly with the app.
 
-- macOS 14 (Sonoma) or later
-- Designed for notched MacBooks. On notchless Macs, it anchors to the top-center of the primary display.
+---
 
-## Intended Features (What it does)
+## 🛠 The Technical Challenge
 
-| Trigger | Behavior |
-| --- | --- |
-| Volume key (F10–F12) or slider change | Notch grows into a notch-wide pill with icon + big % + progress bar. Auto-collapses after 1.6 s. |
-| Brightness key (F1/F2) | Same, tinted amber. |
-| Song change *(WIP)* | Song title + artist + album art slide out below the notch. Auto-collapses. |
-| AirPods / output device change | Device name + icon appears under the notch. |
-| Hover over the notch *(WIP)* | Single haptic tick, then expands into a full panel: left half is album art + title/artist + timeline + previous/play-pause/next buttons; right half is VOLUME and BRIGHTNESS sliders with large percentages. Click the buttons to control playback. |
-| Mouse leaves the panel | Panel collapses back into the notch. |
+The biggest hurdle for any macOS notch app is that Apple blocks third-party apps from reading `MediaRemote` artwork data. 
 
-## How it works
+**NotchAni** overcomes this by embedding a specialized **Objective-C framework and Perl-based injector** directly into the app bundle. This bridge impersonates a system process to stream media data as JSON envelopes. We implemented a custom parser that handles:
+1.  **Envelopes:** Parsing the `{"type": "data", "payload": {...}}` structure.
+2.  **Diffing:** Merging incremental updates (e.g., just the timestamp) into a persistent local state.
+3.  **Framework Integrity:** A specialized build script uses `ditto` to preserve the delicate symlink structure required for macOS frameworks to load correctly.
 
-- **Overlay window** — borderless, non-activating `NSPanel` at `overlayWindow` level, present on all Spaces / fullscreen. Flips `ignoresMouseEvents` to `false` when the panel is expanded so the media buttons can be clicked.
-- **Volume + device monitoring** — Core Audio property listeners on `kAudioDevicePropertyVolumeScalar` + `kAudioDevicePropertyMute`. When the default output device changes, we read `kAudioObjectPropertyName` and fire a "connected" notification.
-- **Brightness monitoring** — `dlopen`s `DisplayServices.framework` and polls `DisplayServicesGetBrightness` on a 100 ms timer.
-- **Media info (WIP)** — `dlopen`s `MediaRemote.framework`, calls `MRMediaRemoteRegisterForNowPlayingNotifications`, observes the four `kMRMediaRemoteNowPlaying…DidChangeNotification`s, and calls `MRMediaRemoteGetNowPlayingInfo` to pull title/artist/artwork/elapsed/duration. Playback commands go back through `MRMediaRemoteSendCommand`.
-- **Hover** — global `NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved)` watches `NSEvent.mouseLocation`. When the cursor enters a hot zone anchored to the notch, fires `NSHapticFeedbackManager.perform(.alignment)` and transitions the view model to `.expanded`. The hot zone grows with the panel so you can move inside it freely.
-- **HUD suppression (WIP)** — The current approach involves enumerating pids via `proc_listallpids` / `proc_pidpath` every 100 ms and sending `SIGSTOP` to `OSDUIHelper` (with `SIGCONT` sent on quit). This is actively being tweaked to reliably prevent the system HUD from drawing.
-- **Animation** — one shared flat-top / rounded-bottom `NotchShape`, SwiftUI spring animations on the size change, content cross-fades with a short delay so the shape expands first and text settles in after.
+---
 
-## File layout
+## 🚀 How to Build
 
-```text
-Package.swift
-Sources/NotchAni/
-  NotchAniApp.swift         @main entry
-  AppDelegate.swift         lifecycle, menu bar
-  NotchController.swift     wires monitors + view model + hover
-  NotchViewModel.swift      state machine + data types
-  NotchWindow.swift         NSPanel over the notch
-  NotchRootView.swift       SwiftUI views for idle / hud / notification / expanded
-  AudioMonitor.swift        Core Audio volume + device listener
-  BrightnessMonitor.swift   DisplayServices poller
-  MediaRemoteMonitor.swift  MediaRemote private-framework wrapper
-  HoverMonitor.swift        global mouse-moved watcher
-  SystemHUDSuppressor.swift SIGSTOP loop for OSDUIHelper (WIP)
-```
+Because NotchAni uses a complex background bridge and ad-hoc code signing, you cannot build it by simply clicking "Play" in Xcode. You must use the terminal.
+
+### Prerequisites
+* macOS 14.0+ (Sonoma or later)
+* Xcode 15+ 
+* Swift 5.9+
+
+### Build Instructions
+
+1.  **Clone the Repo:**
+    ```bash
+    git clone [https://github.com/Aaru1801/NotchAni.git](https://github.com/Aaru1801/NotchAni.git)
+    cd NotchAni
+    ```
+
+2.  **Run the Build Script:**
+    This script compiles the binary, injects the adapter, strips metadata detritus, and signs the bundle.
+    ```bash
+    chmod +x scripts/build-app.sh
+    ./scripts/build-app.sh
+    ```
+
+3.  **Launch:**
+    ```bash
+    open NotchAni.app
+    ```
+
+---
+
+## ⚙️ Permissions
+
+To work its magic, NotchAni needs:
+* **Accessibility:** To suppress the native system HUDs.
+* **Media Library:** To access now-playing metadata.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. It is open for anyone to use, modify, and improve.
+
+---
+
+## 💡 Origin & Attribution
+
+This project was born out of a personal desire for a more seamless and modern macOS experience—I wanted this tool to exist, so I decided to make it. While I had the vision and the architectural requirements for NotchAni, I did not previously know the Swift programming language. **Claude Code** has made the realization of this project possible, bridging the gap between my initial idea and the final, functional execution.
+"""
+
+with open("README.md", "w") as f:
+    f.write(readme_content)
+
+print("README.md generated successfully.")
