@@ -1,4 +1,4 @@
-readme_content = """#  NotchAni
+#  NotchAni
 **A production-grade, Dynamic Island-inspired HUD for macOS.**
 
 NotchAni was born out of a simple frustration: the default macOS volume and brightness "bezels" feel dated, and most third-party notch apps are broken when it comes to showing what's actually playing in Spotify or Apple Music. 
