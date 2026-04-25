@@ -15,7 +15,7 @@ NotchAni was born out of a simple frustration: the default macOS 26 liquid glass
 
 ---
 
-## 🛠 The Technical Challenge
+## The Technical difficulties
 
 The biggest hurdle for any macOS notch app is that Apple blocks third-party apps from reading `MediaRemote` artwork data. 
 
